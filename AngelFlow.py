@@ -4,7 +4,7 @@ class layer:
     """Dummy layer class."""
     pass
 
-class mlayer(layer):
+class matlayer(layer):
     """Matrix layer."""
     def __init__(self, io = None, mat = None):
         if mat is None:
