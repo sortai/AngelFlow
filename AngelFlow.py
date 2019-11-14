@@ -38,3 +38,7 @@ class addlayer(layer):
                 except TypeError:
                     io = (io, io)
                 self.vec = np.asarray([[0+0j]]*io[0])
+    
+    @property
+    def io(self):
+        return (self.vec.shape[0], self.vec.shape[0])
