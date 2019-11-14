@@ -26,7 +26,7 @@ class matlayer(layer):
         return (s[1],s[0])
 
 class addlayer(layer):
-    "vector additive layer"
+    "Vector additive layer"
     def __init__(self, io = None, vec = None):
         if vec is None:
             if io is None:
@@ -34,7 +34,7 @@ class addlayer(layer):
                 self.vec = np.asarray([[0+0j]])
             else:
                 try:
-                    if io[0] != io[-1]: raise ValueError("io of an additive layer must be integer or square")
+                    if io[0] != io[-1]: raise ValueError("io of an additive layer must be square")
                 except TypeError:
                     io = (io, io)
                 self.vec = np.asarray([[0+0j]]*io[0])
@@ -42,3 +42,5 @@ class addlayer(layer):
     @property
     def io(self):
         return (self.vec.shape[0], self.vec.shape[0])
+
+
