@@ -4,19 +4,21 @@ class layer:
     """Dummy layer class."""
     pass
 
-class llayer(layer):
-    """Linear layer."""
-    def __init__(self, imat = None, ivec = None, shape = None):
-        if shape is not None and len(shape)>2: shape = (shape[0], shape[-1])
+class mlayer(layer):
+    """Matrix layer."""
+    def __init__(self, io = None, imat = None):
         if imat is None:
-            if shape is None: self.mat = np.mat("1+0j")
+            if io is None:
+                #shape is assumed to be (1, 1)
+                self.mat = np.mat("1+0j")
+                self.vec = np.mat("0j")
             else:
-                #truncated identity matrix
-                self.mat = np.mat(np.identity(max(shape),dtype=np.complex_)[:min(shape)])
-                if shape[0]>shape[1]: self.mat = self.mat.T
-        else: self.mat = np.mat(imat)
-        if ivec is None:
-            if shape is None: self.vec = np.mat("0+0j")
-            else: self.vec = np.mat(np.zeros(shape[0]),dtype=np.complex_)
-        else: self.vec = np.mat(ivec)
-        
+                #truncated identity
+                self.mat = np.mat("; ".join("0+0j "*min(i,io[0])+"1+0j"*int(i<io[0])+" 0+0j"*max(io[0]-1-i,0) for i in range(io[1])))
+        else:
+            self.mat = np.mat(imat)
+                
+    @property
+    def io(self):
+        s = self.mat.shape
+        return (s[1],s[0])
