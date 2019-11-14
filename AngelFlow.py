@@ -11,9 +11,11 @@ class matlayer(layer):
             if io is None:
                 #shape is assumed to be (1, 1)
                 self.mat = np.mat("1+0j")
-                self.vec = np.mat("0j")
             else:
-                #truncated identity
+                try: io[0]
+                except TypeError:
+                    io = (io, io)
+                #'eye'
                 self.mat = np.mat(np.eye(io[-1],io[0], dtype=np.complex_))
         else:
             self.mat = np.mat(mat)
@@ -22,3 +24,17 @@ class matlayer(layer):
     def io(self):
         s = self.mat.shape
         return (s[1],s[0])
+
+class addlayer(layer):
+    "vector additive layer"
+    def __init__(self, io = None, vec = None):
+        if vec is None:
+            if io is None:
+                #shape is assumed to be (1, 1)
+                self.vec = np.asarray([[0+0j]])
+            else:
+                try:
+                    if io[0] != io[-1]: raise ValueError("io of an additive layer must be integer or square")
+                except TypeError:
+                    io = (io, io)
+                self.vec = np.asarray([[0+0j]]*io[0])
